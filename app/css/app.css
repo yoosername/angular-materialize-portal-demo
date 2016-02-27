@@ -1,0 +1,121 @@
+/* app css stylesheet */
+body {
+  display: flex;
+  padding-top: 0px;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#main {
+  flex: 1 0 auto;
+  padding-top:50px;
+  padding-bottom:50px;
+}
+
+nav{
+  background-color: #254250 !important;
+}
+
+.nav-wrapper{
+  padding-left:20px;
+  background-color: #254250;
+}
+
+.card .card-action{
+  background-color: #fff;
+  padding:10px;
+}
+
+footer.page-footer{
+  background-color: #254250 !important;
+}
+
+.breadcrumb::before{content: '' !important;}
+
+.crumbs{
+  padding-left:150px;
+  margin: 0px;
+}
+
+.crumbs li{
+  display:inline !important;
+}
+
+.crumbs li a::after {
+  content: '\E5CC';
+    color: rgba(255,255,255,0.7);
+    vertical-align: top;
+    display: inline-block;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 25px;
+    margin: 0 10px 0 8px;
+    -webkit-font-smoothing: antialiased;
+}
+.crumbs span{
+  color: #fff;
+  background-color: crimson;
+  padding: 5px;
+}
+
+.btn{
+  background-color: deepskyblue;
+}
+.btn-large{
+  background-color: deepskyblue;
+}
+
+#account-form{
+  padding:20px;
+}
+
+#toast-container{
+  top: auto;
+  bottom: 0 !important;
+  right: 50% !important;
+}
+.toast{
+  background-color: gold;
+}
+#status-buttons{
+  position:absolute;
+  left: 10%;
+}
+#status-buttons div.divider{
+  background-color: darkgrey;
+  width: 5px;
+  height: 50px;
+  z-index: -100;
+  position: absolute;
+  left: 28px;
+}
+.wizardtrail{
+  display: block;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.wizardtrail li{
+  /*float: left;*/
+  font-size: 18px;
+  margin:10px;
+}
+.wizardtrail li a{
+  color: darkgrey;
+}
+.wizardtrail li a.active{
+  color: deepskyblue;
+}
+.wizardtrail li a.active span.step{
+  color: #ffffff;
+  background-color: deepskyblue;
+}
+.wizardtrail li a span.step{
+  color: #ffffff;
+  background-color: darkgrey;
+  margin: 5px;
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 15px;
+}

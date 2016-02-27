@@ -1,0 +1,34 @@
+<div class="container">
+
+  <div>
+    <h3>Edit {{stateParams.id}} account</h3>
+
+
+    <div id="status-buttons" class="text-center">
+
+      <ul class="wizardtrail">
+        <div class="divider"></div>
+        <li>
+          <a ui-sref-active="active" ui-sref=".stepOne">
+            <span class="step z-depth-1">1</span>
+            <span>Step 1</span>
+          </a>
+        </li>
+        <li>
+          <a ui-sref-active="active" ui-sref=".stepTwo">
+            <span class="step z-depth-1">2</span>
+            <span>Step 2</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+<!-- Here we specify our view that is a container for our subviews(steps) , which in our case can be a form !-->
+<div class="container">
+  <form id="account-form" ng-submit="submit()" class="z-depth-1">
+    <!-- nested state views will be inserted here -->
+    <div  ui-view></div>
+  </form>
+</div>
