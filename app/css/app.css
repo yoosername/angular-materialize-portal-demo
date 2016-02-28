@@ -79,27 +79,18 @@ footer.page-footer{
   background-color: gold;
 }
 #status-buttons{
-  position:absolute;
-  left: 10%;
+  margin-bottom:20px;
+  padding:10px
 }
-#status-buttons div.divider{
-  background-color: darkgrey;
-  width: 5px;
-  height: 50px;
-  z-index: -100;
-  position: absolute;
-  left: 28px;
-}
+
 .wizardtrail{
-  display: block;
-  padding-left: 0;
-  margin-bottom: 0;
   list-style: none;
 }
 .wizardtrail li{
   /*float: left;*/
   font-size: 18px;
   margin:10px;
+  display: inline;
 }
 .wizardtrail li a{
   color: darkgrey;
