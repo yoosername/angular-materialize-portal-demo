@@ -83,6 +83,15 @@ footer.page-footer{
   padding:10px
 }
 
+.missing h1{
+  font-weight: bold;
+  font-size: 6em;
+  margin:0px;
+}
+.missing h2{
+  font-weight: bold;
+  margin: 0px;
+}
 .wizardtrail{
   list-style: none;
 }

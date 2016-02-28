@@ -3,7 +3,9 @@
 /* Controllers */
 var portalControllers = angular.module('portalControllers', []);
 
-portalControllers.controller('DashboardCtrl', ['$scope', '$state', '$stateParams', function($scope,$state,$stateParams) {
+portalControllers.controller('DashboardCtrl', [
+  '$rootScope', '$scope', '$state', '$stateParams', function($rootScope,$scope,$state,$stateParams) {
+
   $scope.state = $state;
   $scope.stateParams = $stateParams;
   $scope.instanceID = $stateParams.instanceID;
@@ -11,14 +13,24 @@ portalControllers.controller('DashboardCtrl', ['$scope', '$state', '$stateParams
   $scope.password = "";
 
   $scope.resetPassword = function(){
-    if($scope.password.length > 8){
-      console.log("user reset password to: " + $scope.password);
-      Materialize.toast('Password has been reset', 4000)
-    }else{
-      console.log("password too short: " + $scope.password);
-      Materialize.toast('Password must be at least 8 characters!!', 8000)
-    }
+    console.log("user reset password to: " + $scope.password);
+    $scope.password = "";
+    Materialize.toast('Password has been reset', 4000);
   }
+
+  $scope.validPassword = function(){
+    if($scope.password.length < 8){
+      return false;
+    }
+
+    return true;
+  }
+
+  $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
+    event.preventDefault();
+    $scope.missingState = unfoundState.to;
+    $state.go('404');
+  });
 }]);
 
 portalControllers.controller('AccountsCtrl', [

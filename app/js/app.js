@@ -15,7 +15,7 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
       prefixStateName: 'dashboard'
     });
 
-    $urlRouterProvider.otherwise("/dashboard");
+    $urlRouterProvider.otherwise('/404');
 
     $stateProvider
         .state('dashboard', {
@@ -66,6 +66,13 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
           controller: 'AccountWizardCtrl',
           ncyBreadcrumb: {
             skip: true
+          }
+        })
+        .state('404', {
+          url: '/404',
+          templateUrl: "partials/404.html",
+          ncyBreadcrumb: {
+            label: '404'
           }
         })
 
