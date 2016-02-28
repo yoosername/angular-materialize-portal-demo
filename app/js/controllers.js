@@ -48,9 +48,9 @@ portalControllers.controller('AccountsCtrl', [
     $state.go("accounts");
   }
 
-  $scope.agreeSyops = function(){
-    console.log("Syops agreed, model = ");
-    $state.go("accounts.wizard.stepTwo");
+  $scope.agreeLicense = function(){
+    console.log("License agreed, model = ");
+    $state.go("accounts.wizard.complete");
   }
 
   $rootScope.$on('$stateChangeStart', function(evt, to, params) {

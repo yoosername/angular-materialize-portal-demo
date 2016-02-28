@@ -50,19 +50,19 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
             label: '{{stateParams.id | capitalise}}',
             parent: 'accounts'
           },
-          redirectTo: 'accounts.wizard.stepOne'
+          redirectTo: 'accounts.wizard.license'
         })
-        .state('accounts.wizard.stepOne', {
-          url: '/stepOne',
-          templateUrl: 'partials/accounts/step-one.html',
+        .state('accounts.wizard.license', {
+          url: '/license',
+          templateUrl: 'partials/accounts/license.html',
           controller: 'AccountWizardCtrl',
           ncyBreadcrumb: {
             skip: true
           }
         })
-        .state('accounts.wizard.stepTwo', {
-          url: '/stepTwo',
-          templateUrl: 'partials/accounts/step-two.html',
+        .state('accounts.wizard.complete', {
+          url: '/complete',
+          templateUrl: 'partials/accounts/complete.html',
           controller: 'AccountWizardCtrl',
           ncyBreadcrumb: {
             skip: true

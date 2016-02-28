@@ -83,6 +83,9 @@ footer.page-footer{
   padding:10px
 }
 
+.zombies{
+  height:250px;
+}
 .missing h1{
   font-weight: bold;
   font-size: 6em;
@@ -102,7 +105,7 @@ footer.page-footer{
   display: inline;
 }
 .wizardtrail li a{
-  color: darkgrey;
+  color: slategrey;
 }
 .wizardtrail li a.active{
   color: deepskyblue;
@@ -113,7 +116,7 @@ footer.page-footer{
 }
 .wizardtrail li a span.step{
   color: #ffffff;
-  background-color: darkgrey;
+  background-color: slategrey;
   margin: 5px;
   font-size: 18px;
   padding: 5px 10px;
