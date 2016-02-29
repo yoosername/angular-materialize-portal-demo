@@ -13,6 +13,7 @@
     "angular-resource": "1.4.x",
     "angular-ui-router": "^0.2.18",
     "angular-breadcrumb": "^0.4.1",
-    "Materialize": "materialize#^0.97.5"
+    "Materialize": "materialize#^0.97.5",
+    "material-design-icons": "^2.2.0"
   }
 }

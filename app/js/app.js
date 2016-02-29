@@ -18,6 +18,7 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
     $urlRouterProvider.otherwise('/404');
 
     $stateProvider
+        // MAIN ENTRY ROUTE
         .state('dashboard', {
           url: "/dashboard",
           templateUrl: "partials/dashboard.html",
@@ -26,6 +27,8 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
             label: 'Dashboard'
           }
         })
+
+        // ACCOUNTS ROUTES
         .state('accounts', {
           url: "/accounts",
           views: {
@@ -68,6 +71,22 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
             skip: true
           }
         })
+
+        // PROJECTS ROUTES
+        .state('projects', {
+          url: "/projects",
+          views: {
+            '': {
+              templateUrl: "partials/projects/projects.html",
+              controller: 'ProjectsCtrl'
+            }
+          },
+          ncyBreadcrumb: {
+            label: 'Projects'
+          }
+        })
+
+        // CATCH ALL ROUTE
         .state('404', {
           url: '/404',
           templateUrl: "partials/404.html",

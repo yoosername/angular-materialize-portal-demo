@@ -12,6 +12,10 @@ body {
   padding-bottom:50px;
 }
 
+a.delete{
+  background-color: darkred;
+}
+
 nav{
   background-color: #254250 !important;
 }
