@@ -6,10 +6,13 @@ var portalApp = angular.module('portalApp', [
   'portalControllers',
   'ncy-angular-breadcrumb',
   'portalFilters',
-  'portalServices'
+  'portalServices',
+  'restangular'
 ]);
 
-portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvider) {
+portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvider, RestangularProvider) {
+
+    RestangularProvider.setBaseUrl('/api');
 
     $breadcrumbProvider.setOptions({
       prefixStateName: 'dashboard'
@@ -45,8 +48,7 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
           url: "/:id",
           views: {
             '': {
-              templateUrl: "partials/accounts/wizard.html",
-              controller: 'AccountWizardCtrl'
+              templateUrl: "partials/accounts/wizard.html"
             }
           },
           ncyBreadcrumb: {
@@ -58,7 +60,6 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
         .state('accounts.wizard.license', {
           url: '/license',
           templateUrl: 'partials/accounts/license.html',
-          controller: 'AccountWizardCtrl',
           ncyBreadcrumb: {
             skip: true
           }
@@ -66,7 +67,6 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
         .state('accounts.wizard.complete', {
           url: '/complete',
           templateUrl: 'partials/accounts/complete.html',
-          controller: 'AccountWizardCtrl',
           ncyBreadcrumb: {
             skip: true
           }
@@ -83,6 +83,45 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
           },
           ncyBreadcrumb: {
             label: 'Projects'
+          },
+          redirectTo: 'projects.list'
+        })
+
+        .state('projects.list', {
+          url: "/all",
+          views: {
+            '': {
+              templateUrl: "partials/projects/list.html",
+            }
+          },
+          ncyBreadcrumb: {
+            label: 'My Projects'
+          }
+        })
+
+        .state('projects.new', {
+          url: "/new",
+          views: {
+            '': {
+              templateUrl: "partials/projects/new.html",
+              controller: 'ProjectsNewCtrl'
+            }
+          },
+          ncyBreadcrumb: {
+            label: 'New'
+          }
+        })
+
+        .state('projects.edit', {
+          url: "/edit/:id",
+          views: {
+            '': {
+              templateUrl: "partials/projects/edit.html",
+              controller: 'ProjectsEditCtrl'
+            }
+          },
+          ncyBreadcrumb: {
+            label: '{{stateParams.id | capitalise}}'
           }
         })
 

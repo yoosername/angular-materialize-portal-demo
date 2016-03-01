@@ -1,0 +1,24 @@
+<div class="row">
+  <h3>Create New {{type|uppercase}} project</h3>
+</div>
+<div class="row">
+  <form ng-submit="createProject()">
+      <div class="row">
+        <div class="input-field col s12">
+          <input ng-model="project.name" id="name" type="text" class="validate">
+          <label for="name">Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input ng-model="project.desc"  id="desc" type="text" class="validate">
+          <label for="desc">Description</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <button class="btn" id="submit" type="submit">create</button>
+        </div>
+      </div>
+    </form>
+</div>

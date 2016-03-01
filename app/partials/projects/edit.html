@@ -1,0 +1,30 @@
+<div class="row">
+  <h3>Edit {{project.type | uppercase}} project {{project.name}} ({{project.id}})</h3>
+</div>
+<div class="row">
+  <form ng-submit="updateProject(project)">
+      <div class="row">
+        <div class="input-field col s12">
+          <input disabled id="created" value="{{project.created|date:medium}}" type="text" class="validate">
+          <label class="active" for="created">Created</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="name" ng-model="project.name" type="text" class="validate">
+          <label class="active" for="name">Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="desc" ng-model="project.desc" type="text" class="validate">
+          <label class="active" for="desc">Description</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <button class="btn" id="submit" type="submit">update</button>
+        </div>
+      </div>
+    </form>
+</div>

@@ -27,6 +27,7 @@ portalControllers.controller('DashboardCtrl', [
 }]);
 
 
+
 portalControllers.controller('AccountsCtrl', [
   '$rootScope','$scope', '$state', '$stateParams', function($rootScope,$scope,$state,$stateParams) {
 
@@ -50,8 +51,91 @@ portalControllers.controller('AccountsCtrl', [
 }]);
 
 
-portalControllers.controller('PasswordCtrl', [
-  '$rootScope','$scope', '$state', '$stateParams', function($rootScope,$scope,$state,$stateParams) {
+portalControllers.controller('ProjectsCtrl', function($scope,$state,Projects) {
+
+    // Get list of users projects from server
+    Projects.getList().then(function(projects){
+      $scope.projects = projects;
+    })
+
+    // Handle editing a project
+    $scope.editProject = function(project){
+      console.log("EDIT Project with id: " + project.id);
+      $scope.project = project;
+      $state.go("projects.edit",{id:project.id});
+    }
+
+    // Handle creating a project
+    $scope.newProject = function(type){
+      console.log("CREATE Project of type: " + type);
+      $scope.type = type;
+      $state.go("projects.new");
+    }
+
+    // Handle deleting a project
+    $scope.deleteProject = function(project){
+      console.log("DELETE Project with id: " + project.id);
+      // TODO: Add some confirmation box
+      Projects.one(project.id).remove().then(function(projects) {
+        $scope.projects = projects;
+      });
+    }
+});
+
+
+portalControllers.controller('ProjectsNewCtrl', function($scope,$state,Projects) {
+
+  $scope.project = {};
+
+  $scope.createProject = function(){
+
+    // Put the new object on the server
+    Projects.post($scope.project).then(function(project){
+
+      // add type from scope
+      project.type = $scope.type;
+      $scope.type = "";
+
+      // Eagerly insert the object into the local collection
+      $scope.projects.push(project);
+      console.log("Project "+project.id+" Created: " + JSON.stringify($scope.projects))
+      $state.go("projects.list");
+      Materialize.toast('Project '+project.id+' has been created', 4000);
+    })
+  }
+
+});
+
+
+portalControllers.controller('ProjectsEditCtrl', function($scope,Projects,$stateParams,$state) {
+
+    Projects.one($stateParams.id).get().then(function(project){
+      $scope.project = project;
+    });
+
+    $scope.updateProject = function(project){
+
+      // PUT the new object on the server
+      project.put().then(function(project){
+
+        // Insert the newly updated object into the local collection for eager refresh
+        for (var i in $scope.projects) {
+          if ($scope.projects[i].id == project.id) {
+             $scope.projects[i] = project;
+             break;
+          }
+        }
+
+        console.log("Project "+project.id+" Updated: " + JSON.stringify($scope.projects))
+        $state.go("projects");
+        Materialize.toast('Project '+project.id+' has been updated', 4000);
+      })
+    }
+
+});
+
+
+portalControllers.controller('PasswordCtrl', function($scope) {
 
     // Configure Password reset scope here.
     $scope.password = "";
@@ -70,18 +154,4 @@ portalControllers.controller('PasswordCtrl', [
       return true;
     }
 
-}]);
-
-
-portalControllers.controller('ProjectsCtrl', [
-  '$rootScope','$scope', '$state', '$stateParams', function($rootScope,$scope,$state,$stateParams) {
-
-
-}]);
-
-
-portalControllers.controller('AccountWizardCtrl', [
-  '$rootScope','$scope', '$state', '$stateParams', function($rootScope,$scope,$state,$stateParams) {
-
-
-}]);
+});

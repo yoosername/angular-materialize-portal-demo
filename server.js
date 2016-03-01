@@ -153,7 +153,10 @@ function localStorageConnector(key){
   this.save = function(obj){
     var objs = this.getAll() || [];
     if(objs){
-      obj = Object.assign({}, obj, {"id": this.id++});
+      obj = Object.assign({}, obj, {
+        "id": this.id++,
+        "created": new Date().getTime()
+      });
       objs.push(obj);
       localStorage.setItem(key, JSON.stringify(objs));
       return obj;
@@ -169,7 +172,10 @@ function localStorageConnector(key){
     var objs = this.getAll();
     for(var i=0; i<objs.length; i++){
       if(objs[i].id == id){
-        var newObj = Object.assign({}, obj, {"id": objs[i].id});
+        var newObj = Object.assign({}, obj, {
+          "id": objs[i].id,
+          "updated": new Date().getTime()
+        });
         objs[i] = newObj;
         localStorage.setItem(key, JSON.stringify(objs));
         return newObj;

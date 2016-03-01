@@ -6,6 +6,10 @@ body {
   flex-direction: column;
 }
 
+.container{
+  width: 80% !important;
+}
+
 #main {
   flex: 1 0 auto;
   padding-top:50px;
@@ -14,6 +18,20 @@ body {
 
 a.delete{
   background-color: crimson;
+}
+
+a.btn-new-project{
+  margin-top:25px;
+  margin-right: 5px;
+}
+
+a.btn-new-project:hover{
+  background-color: crimson !important;
+}
+
+a.btn-new-project i{
+  font-weight: bold;
+  font-size: 25px;
 }
 
 nav{

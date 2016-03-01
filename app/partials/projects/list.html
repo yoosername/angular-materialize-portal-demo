@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col s6 m6">
+    <h3>My Projects</h3>
+  </div>
+</div>
+<div class="row" ng-hide="projects.length>0">
+  <div class="col s12 m12">
+    <h4>You currently have no projects</h4>
+    <p>
+      Click one of the links above to get started
+    </p>
+  </div>
+</div>
+<div class="row" ng-hide="projects.length==0">
+  <table class="highlight">
+    <thead>
+      <tr>
+        <th data-field="id">ID</th>
+        <th data-field="type">Type</th>
+        <th data-field="created">Created</th>
+        <th data-field="updated">Updated</th>
+        <th data-field="name">Name</th>
+        <th data-field="desc">Description</th>
+        <th data-field="actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="project in projects">
+        <td>{{project.id}}</td>
+        <td>
+          <a ui-sref="projects.jira" class="waves-effect waves-light">
+            <i class="material-icons left">dns</i>{{project.type | uppercase}}
+          </a>
+        </td>
+        <td>{{project.created | date:'medium'}}</td>
+        <td>{{project.updated | date:'medium'}}</td>
+        <td>{{project.name}}</td>
+        <td>{{project.desc}}</td>
+        <td>
+          <a ng-click="editProject(project)" class="waves-effect waves-light btn">
+            <i class="material-icons left">dns</i>Edit
+          </a>
+          <a ng-click="deleteProject(project)" class="delete waves-effect waves-light btn">
+            <i class="material-icons left">delete</i>Delete
+          </a>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
