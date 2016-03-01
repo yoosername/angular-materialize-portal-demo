@@ -29,18 +29,18 @@
         <td>{{project.id}}</td>
         <td>
           <a ui-sref="projects.jira" class="waves-effect waves-light">
-            <i class="material-icons left">dns</i>{{project.type | uppercase}}
+            <i class="material-icons left">filter_list</i>{{project.type | uppercase}}
           </a>
         </td>
         <td>{{project.created | date:'medium'}}</td>
         <td>{{project.updated | date:'medium'}}</td>
         <td>{{project.name}}</td>
         <td>{{project.desc}}</td>
-        <td>
-          <a ng-click="editProject(project)" class="waves-effect waves-light btn">
-            <i class="material-icons left">dns</i>Edit
+        <td class="actions_column">
+          <a ng-click="editProject(project)" class="waves-effect waves-light btn action">
+            <i class="material-icons left">mode_edit</i>Edit
           </a>
-          <a ng-click="deleteProject(project)" class="delete waves-effect waves-light btn">
+          <a ng-click="deleteProject(project)" class="delete waves-effect waves-light btn action">
             <i class="material-icons left">delete</i>Delete
           </a>
         </td>

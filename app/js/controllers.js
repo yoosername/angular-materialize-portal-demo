@@ -78,6 +78,8 @@ portalControllers.controller('ProjectsCtrl', function($scope,$state,Projects) {
       // TODO: Add some confirmation box
       Projects.one(project.id).remove().then(function(projects) {
         $scope.projects = projects;
+        $state.go("projects");
+        Materialize.toast('Project '+project.id+' has been deleted', 4000);
       });
     }
 });
@@ -89,12 +91,12 @@ portalControllers.controller('ProjectsNewCtrl', function($scope,$state,Projects)
 
   $scope.createProject = function(){
 
+    // add type from scope
+    $scope.project.type = $scope.type;
+    $scope.type = "";
+
     // Put the new object on the server
     Projects.post($scope.project).then(function(project){
-
-      // add type from scope
-      project.type = $scope.type;
-      $scope.type = "";
 
       // Eagerly insert the object into the local collection
       $scope.projects.push(project);

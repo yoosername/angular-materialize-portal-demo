@@ -16,17 +16,29 @@ body {
   padding-bottom:50px;
 }
 
+.actions_column{
+  width: 220px;
+}
+
 a.delete{
   background-color: crimson;
+}
+
+a.action{
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 a.btn-new-project{
   margin-top:25px;
   margin-right: 5px;
+  background-color: #fff;
+  color: deepskyblue;
 }
 
 a.btn-new-project:hover{
-  background-color: crimson !important;
+  background-color: deepskyblue;
+  color: #fff;
 }
 
 a.btn-new-project i{
@@ -93,13 +105,13 @@ footer.page-footer{
 }
 
 #toast-container{
-  top: auto;
-  bottom: 0 !important;
-  right: 50% !important;
+  top: 0% !important;
+  right: 10% !important;
 }
 .toast{
   background-color: gold;
 }
+
 #status-buttons{
   margin-bottom:20px;
   padding:10px

@@ -4,26 +4,29 @@
 <div class="row">
   <form ng-submit="updateProject(project)">
       <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s12 m12">
           <input disabled id="created" value="{{project.created|date:medium}}" type="text" class="validate">
           <label class="active" for="created">Created</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s12 m12">
           <input id="name" ng-model="project.name" type="text" class="validate">
           <label class="active" for="name">Name</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s12 m12">
           <input id="desc" ng-model="project.desc" type="text" class="validate">
           <label class="active" for="desc">Description</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s12">
-          <button class="btn" id="submit" type="submit">update</button>
+        <div class="input-field col s12 m12">
+          <button class="btn" id="submit" type="submit"><i class="material-icons left">save</i>Save</button>
+          <a ng-click="deleteProject(project)" class="delete waves-effect waves-light btn">
+            <i class="material-icons left">delete</i>Delete
+          </a>
         </div>
       </div>
     </form>
