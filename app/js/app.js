@@ -7,10 +7,17 @@ var portalApp = angular.module('portalApp', [
   'ncy-angular-breadcrumb',
   'portalFilters',
   'portalServices',
+  'portalDirectives',
   'restangular'
 ]);
 
-portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvider, RestangularProvider) {
+portalApp.config(function(
+  $stateProvider,
+  $urlRouterProvider,
+  $breadcrumbProvider,
+  RestangularProvider,
+  $urlMatcherFactoryProvider
+) {
 
     RestangularProvider.setBaseUrl('/api');
 
@@ -19,6 +26,8 @@ portalApp.config(function($stateProvider, $urlRouterProvider, $breadcrumbProvide
     });
 
     $urlRouterProvider.otherwise('/404');
+
+    $urlMatcherFactoryProvider.strictMode(false);
 
     $stateProvider
         // MAIN ENTRY ROUTE

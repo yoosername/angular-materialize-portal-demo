@@ -1,11 +1,14 @@
 <div class="row">
   <h3>Create New {{type|uppercase}} project</h3>
 </div>
-<div class="row">
+<div ng-hide="type" class="row">
+  <h4>Please pick an application from the links above</h4>
+</div>
+<div ng-hide="!type" class="row">
   <form ng-submit="createProject()">
       <div class="row">
         <div class="input-field col s12">
-          <input ng-model="project.name" id="name" type="text" class="validate">
+          <input ng-model="project.name" id="name" type="text" class="validate" autofocus>
           <label for="name">Name</label>
         </div>
       </div>
