@@ -61,7 +61,7 @@ portalApp.config(function(
             }
           },
           ncyBreadcrumb: {
-            label: '{{stateParams.id | capitalise}}',
+            label: '{{account.id | capitalise}}',
             parent: 'accounts'
           },
           redirectTo: 'accounts.wizard.license'

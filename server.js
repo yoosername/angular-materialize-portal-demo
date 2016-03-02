@@ -63,44 +63,73 @@ app.get('/api/projects/:id', (req, res) => {
 })
 
 // get localstorage for accounts key
-var accounts = new localStorageConnector("accounts");
+var jira = new localStorageConnector("jira");
 
-// create new account
-app.post('/api/accounts', (req, res) => {
-  var newAccount = req.body || {};
-  console.log("POST: /api/accounts: " + JSON.stringify(newAccount));
-  var created = accounts.save(newAccount);
-  handle(created, res, 500, "couldnt create new account");
+app.post('/api/accounts/jira', (req, res) => {
+  var jiraAccount = req.body || {};
+  console.log("POST: /api/accounts/jira: " + JSON.stringify(jiraAccount));
+  var created = jira.saveOne(jiraAccount);
+  handle(created, res, 400, "couldnt create new JIRA account");
 })
 
-// update existing account
-app.put('/api/accounts/:id', (req, res) => {
-  var newAccount = req.body || {};
-  console.log("PUT: /api/accounts/" + req.params.id + " : " + JSON.stringify(newAccount));
-  var updated = accounts.update(req.params.id, newAccount);
-  handle(updated, res, 404, "that account doesnt exist yet");
-})
-
-// delete existing project
-app.delete('/api/accounts/:id', (req, res) => {
-  console.log("DELETE: /api/accounts/" + req.params.id);
-  var deleted = accounts.delete(req.params.id);
-  handle(deleted, res, 404, "that account id doesnt exist");
+// delete existing account
+app.delete('/api/accounts/jira', (req, res) => {
+  console.log("DELETE: /api/accounts/jira");
+  var deleted = jira.delete();
+  handle(deleted, res, 404, "JIRA account doesnt exist");
 })
 
 // Get all accounts
-app.get('/api/accounts', (req, res) => {
-  console.log("GET: /api/accounts");
-  var all = accounts.getAll();
-  handle(all, res, 204, "there are no accounts yet");
+app.get('/api/accounts/jira', (req, res) => {
+  console.log("GET: /api/accounts/jira");
+  var all = jira.getAll();
+  handle(all, res, 204, "you dont have a JIRA account yet");
 })
 
-// Get single account
-app.get('/api/accounts/:id', (req, res) => {
-  console.log("GET: /api/accounts/" + req.params.id);
-  var account = accounts.get(req.params.id);
-  handle(account, res, 404, "that account doesnt exist");
+var confluence = new localStorageConnector("confluence");
+app.post('/api/accounts/confluence', (req, res) => {
+  var confluenceAccount = req.body || {};
+  console.log("POST: /api/accounts/confluence: " + JSON.stringify(confluenceAccount));
+  var created = confluence.saveOne(confluenceAccount);
+  handle(created, res, 400, "couldnt create new confluence account");
 })
+
+// delete existing account
+app.delete('/api/accounts/confluence', (req, res) => {
+  console.log("DELETE: /api/accounts/confluence");
+  var deleted = confluence.delete();
+  handle(deleted, res, 404, "confluence account doesnt exist");
+})
+
+// Get all accounts
+app.get('/api/accounts/confluence', (req, res) => {
+  console.log("GET: /api/accounts/confluence");
+  var all = confluence.getAll();
+  handle(all, res, 204, "you dont have a confluence account yet");
+})
+
+var bitbucket = new localStorageConnector("bitbucket");
+app.post('/api/accounts/bitbucket', (req, res) => {
+  var bitbucketAccount = req.body || {};
+  console.log("POST: /api/accounts/bitbucket: " + JSON.stringify(bitbucketAccount));
+  var created = bitbucket.saveOne(bitbucketAccount);
+  handle(created, res, 400, "couldnt create new bitbucket account");
+})
+
+// delete existing account
+app.delete('/api/accounts/bitbucket', (req, res) => {
+  console.log("DELETE: /api/accounts/bitbucket");
+  var deleted = bitbucket.delete();
+  handle(deleted, res, 404, "bitbucket account doesnt exist");
+})
+
+// Get all accounts
+app.get('/api/accounts/bitbucket', (req, res) => {
+  console.log("GET: /api/accounts/bitbucket");
+  var all = bitbucket.getAll();
+  handle(all, res, 204, "you dont have a bitbucket account yet");
+})
+
 
 // get localstorage for accounts key
 var password = new localStorageConnector("password");
@@ -185,12 +214,16 @@ function localStorageConnector(key){
   }
 
   this.delete = function(id){
-    var objs = this.getAll();
-    newObjs = objs.filter(function (el) {
-      return el.id != id;
-    });
-    localStorage.setItem(key, JSON.stringify(newObjs));
-    return newObjs;
+    if(id){
+      var objs = this.getAll();
+      newObjs = objs.filter(function (el) {
+        return el.id != id;
+      });
+      localStorage.setItem(key, JSON.stringify(newObjs));
+      return newObjs;
+    }else{
+      localStorage.clear(key);
+    }
   }
 
 }

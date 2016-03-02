@@ -11,8 +11,14 @@
         <p>Info about your JIRA account</p>
       </div>
       <div class="card-action">
-        <a ui-sref="accounts.wizard({'id':'jira'})" class="waves-effect waves-light btn-large">
-          <i class="material-icons left">perm_identity</i>Create
+        <a ng-hide="accounts.jira.id" ng-click="edit('jira')" class="waves-effect waves-light btn">
+          <i class="material-icons left">account_box</i>Create
+        </a>
+        <a ng-hide="!accounts.jira.id" ng-click="edit('jira')" class="waves-effect waves-light btn">
+          <i class="material-icons left">edit</i>Edit
+        </a>
+        <a ng-hide="!accounts.jira.id" ng-click="delete('jira')" class="waves-effect waves-light btn right">
+          <i class="material-icons left">delete</i>Delete
         </a>
       </div>
     </div>
@@ -25,8 +31,14 @@
         <p>Info about your Confluence account</p>
       </div>
       <div class="card-action">
-        <a ui-sref="accounts.wizard({'id':'confluence'})" class="waves-effect waves-light btn-large">
-          <i class="material-icons left">perm_identity</i>Create
+        <a ng-hide="accounts.confluence.id" ng-click="edit('confluence')" class="waves-effect waves-light btn">
+          <i class="material-icons left">account_box</i>Create
+        </a>
+        <a ng-hide="!accounts.confluence.id" ng-click="edit('confluence')" class="waves-effect waves-light btn">
+          <i class="material-icons left">edit</i>Edit
+        </a>
+        <a ng-hide="!accounts.confluence.id" ng-click="delete('confluence')" class="waves-effect waves-light btn right">
+          <i class="material-icons left">delete</i>Delete
         </a>
       </div>
     </div>
@@ -38,8 +50,14 @@
         <p>Info about your Bitbucket account</p>
       </div>
       <div class="card-action">
-        <a ui-sref="accounts.wizard({'id':'bitbucket'})" class="waves-effect waves-light btn-large">
-          <i class="material-icons left">perm_identity</i>Create
+        <a ng-hide="accounts.bitbucket.id" ng-click="edit('bitbucket')" class="waves-effect waves-light btn">
+          <i class="material-icons left">account_box</i>Create
+        </a>
+        <a ng-hide="!accounts.bitbucket.id" ng-click="edit('bitbucket')" class="waves-effect waves-light btn">
+          <i class="material-icons left">edit</i>Edit
+        </a>
+        <a ng-hide="!accounts.bitbucket.id" ng-click="delete('bitbucket')" class="waves-effect waves-light btn right">
+          <i class="material-icons left">delete</i>Delete
         </a>
       </div>
     </div>

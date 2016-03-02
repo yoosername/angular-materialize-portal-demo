@@ -4,11 +4,26 @@
 var portalControllers = angular.module('portalControllers', []);
 
 
-portalControllers.controller('DashboardCtrl', [
-  '$rootScope', '$scope', '$state', '$stateParams', function($rootScope,$scope,$state,$stateParams) {
+portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,$stateParams,Accounts) {
 
   // This is used to determine which step we are in within sections with child steps
   $scope.stateParams = $stateParams;
+  $scope.accounts = {};
+
+  // Get all the accounts the current user has and load into the scope now
+
+  Accounts.one("jira").getList().then(function(jiraAccount){
+    console.log(jiraAccount);
+    $scope.accounts.jira = jiraAccount[0] || {};
+  })
+  Accounts.one("confluence").getList().then(function(confluenceAccount){
+    console.log(confluenceAccount);
+    $scope.accounts.confluence = confluenceAccount[0] || {};
+  })
+  Accounts.one("bitbucket").getList().then(function(bitbucketAccount){
+    console.log(bitbucketAccount);
+    $scope.accounts.bitbucket = bitbucketAccount[0] || {};
+  })
 
   // If any state in app has redirect set then goto it here.
   $rootScope.$on('$stateChangeStart', function(evt, to, params) {
@@ -24,12 +39,11 @@ portalControllers.controller('DashboardCtrl', [
     $scope.missingState = unfoundState.to;
     $state.go('404');
   });
-}]);
+});
 
 
 
-portalControllers.controller('AccountsCtrl', [
-  '$rootScope','$scope', '$state', '$stateParams', function($rootScope,$scope,$state,$stateParams) {
+portalControllers.controller('AccountsCtrl', function($scope,$state,Accounts,JiraAccounts) {
 
   $scope.isEditMode = function(){
     if($state.params.id){
@@ -38,17 +52,44 @@ portalControllers.controller('AccountsCtrl', [
     return false;
   };
 
-  $scope.completeForm = function(){
-    console.log("Accounts form completed, model = ");
-    $state.go("accounts");
-  }
+  // Setup edit mode for type
+  $scope.edit = function(id){
+    var account = {
+      "id": id,
+      "license_agreed": false
+    };
+
+    $scope.account = account;
+    $state.go("accounts.wizard",{"id":id});
+  };
 
   $scope.agreeLicense = function(){
-    console.log("License agreed, model = ");
-    $state.go("accounts.wizard.complete");
+    $scope.account["license_agreed"] = true;
+    console.log($scope.account);
+    $state.go("accounts.wizard.complete",{"id":$scope.account.id});
+  };
+
+  //
+  $scope.update = function(id){
+    console.log("updating: "+id)
+    // Put the new object on the server
+    Accounts.one(id).post($scope.account).then(function(accounts){
+      // update actual accounts from server
+      $scope.accounts[$scope.account.id] = accounts;
+      console.log("Account "+$scope.account.id+" Created: " + JSON.stringify(accounts))
+      $state.go("accounts");
+      Materialize.toast('Account '+$scope.account.id+' has been created', 4000);
+    })
   }
 
-}]);
+  $scope.delete = function(id){
+    Accounts.one(id).remove().then(function(accounts) {
+      $scope.accounts = accounts;
+      $state.go("accounts");
+      Materialize.toast('Account '+id+' has been deleted', 4000);
+    });
+  };
+});
 
 
 portalControllers.controller('ProjectsCtrl', function($scope,$state,Projects) {
@@ -67,9 +108,16 @@ portalControllers.controller('ProjectsCtrl', function($scope,$state,Projects) {
 
     // Handle creating a project
     $scope.newProject = function(type){
-      console.log("CREATE Project of type: " + type);
-      $scope.type = type;
-      $state.go("projects.new");
+      if($scope.accounts.jira.id){
+        console.log("CREATE Project of type: " + type);
+        $scope.type = type;
+        $state.go("projects.new");
+      }
+      else{
+        console.log("Cant create project of type: " + type + " : reason (no account)");
+        $state.go("accounts");
+        Materialize.toast('You need a '+type+' account first', 4000);
+      }
     }
 
     // Handle deleting a project
