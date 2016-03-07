@@ -1,63 +1,57 @@
 
 <div ui-view></div>
 
-<div ng-hide="isEditMode()">
+<div>
 
 <div class="row">
   <div class="col s12 m4">
-    <div class="card blue-grey darken-1 hoverable">
+    <div class="card hoverable account-inactive" ng-class="{'account-active':accounts.jira.active}">
       <div class="card-content white-text">
+        <i ng-hide="!accounts.jira.active" class="material-icons right">check circle</i>
         <span class="card-title">JIRA</span>
         <p>Info about your JIRA account</p>
       </div>
       <div class="card-action">
-        <a ng-hide="accounts.jira.id" ng-click="edit('jira')" class="waves-effect waves-light btn">
-          <i class="material-icons left">account_box</i>Create
+        <a ng-hide="accounts.jira.active" ng-click="showLicense('jira')" class="waves-effect waves-light btn">
+          <i class="material-icons left">check circle</i>Activate
         </a>
-        <a ng-hide="!accounts.jira.id" ng-click="edit('jira')" class="waves-effect waves-light btn">
-          <i class="material-icons left">edit</i>Edit
-        </a>
-        <a ng-hide="!accounts.jira.id" ng-click="delete('jira')" class="waves-effect waves-light btn right">
-          <i class="material-icons left">delete</i>Delete
+        <a ng-hide="!accounts.jira.active" ng-click="deactivate('jira')" class="waves-effect waves-light btn">
+          <i class="material-icons left">delete forever</i>Deactivate
         </a>
       </div>
     </div>
 
   </div>
   <div class="col s12 m4">
-    <div class="card blue-grey darken-1 hoverable">
+    <div class="card account-inactive hoverable" ng-class="{'account-active':accounts.confluence.active}">
       <div class="card-content white-text">
+        <i ng-hide="!accounts.confluence.active" class="material-icons right">check circle</i>
         <span class="card-title">Confluence</span>
         <p>Info about your Confluence account</p>
       </div>
       <div class="card-action">
-        <a ng-hide="accounts.confluence.id" ng-click="edit('confluence')" class="waves-effect waves-light btn">
-          <i class="material-icons left">account_box</i>Create
+        <a ng-hide="accounts.confluence.active" ng-click="showLicense('confluence')" class="waves-effect waves-light btn">
+          <i class="material-icons left">check circle</i>Activate
         </a>
-        <a ng-hide="!accounts.confluence.id" ng-click="edit('confluence')" class="waves-effect waves-light btn">
-          <i class="material-icons left">edit</i>Edit
-        </a>
-        <a ng-hide="!accounts.confluence.id" ng-click="delete('confluence')" class="waves-effect waves-light btn right">
-          <i class="material-icons left">delete</i>Delete
+        <a ng-hide="!accounts.confluence.active" ng-click="deactivate('confluence')" class="waves-effect waves-light btn">
+          <i class="material-icons left">delete forever</i>Deactivate
         </a>
       </div>
     </div>
   </div>
   <div class="col s12 m4">
-    <div class="card blue-grey darken-1 hoverable">
+    <div class="card account-inactive hoverable" ng-class="{'account-active':accounts.bitbucket.active}">
       <div class="card-content white-text">
+        <i ng-hide="!accounts.bitbucket.active" class="material-icons right">check circle</i>
         <span class="card-title">Bitbucket</span>
         <p>Info about your Bitbucket account</p>
       </div>
       <div class="card-action">
-        <a ng-hide="accounts.bitbucket.id" ng-click="edit('bitbucket')" class="waves-effect waves-light btn">
-          <i class="material-icons left">account_box</i>Create
+        <a ng-hide="accounts.bitbucket.active" ng-click="showLicense('bitbucket')" class="waves-effect waves-light btn">
+          <i class="material-icons left">check circle</i>Activate
         </a>
-        <a ng-hide="!accounts.bitbucket.id" ng-click="edit('bitbucket')" class="waves-effect waves-light btn">
-          <i class="material-icons left">edit</i>Edit
-        </a>
-        <a ng-hide="!accounts.bitbucket.id" ng-click="delete('bitbucket')" class="waves-effect waves-light btn right">
-          <i class="material-icons left">delete</i>Delete
+        <a ng-hide="!accounts.bitbucket.active" ng-click="deactivate('bitbucket')" class="waves-effect waves-light btn">
+          <i class="material-icons left">delete forever</i>Deactivate
         </a>
       </div>
     </div>

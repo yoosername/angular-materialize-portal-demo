@@ -7,19 +7,15 @@ var portalApp = angular.module('portalApp', [
   'ncy-angular-breadcrumb',
   'portalFilters',
   'portalServices',
-  'portalDirectives',
-  'restangular'
+  'portalDirectives'
 ]);
 
 portalApp.config(function(
   $stateProvider,
   $urlRouterProvider,
   $breadcrumbProvider,
-  RestangularProvider,
   $urlMatcherFactoryProvider
 ) {
-
-    RestangularProvider.setBaseUrl('/api');
 
     $breadcrumbProvider.setOptions({
       prefixStateName: 'dashboard'
@@ -53,31 +49,18 @@ portalApp.config(function(
             label: 'Accounts'
           }
         })
-        .state('accounts.wizard', {
-          url: "/:id",
+        .state('accounts.licenses', {
+          url: "/licenses/:id",
           views: {
             '': {
-              templateUrl: "partials/accounts/wizard.html"
+              templateUrl: function ($stateParams){
+               return '/partials/accounts/licenses/' + $stateParams.id + '.html';
+             },
+              controller: 'AccountsLicensesCtrl'
             }
           },
           ncyBreadcrumb: {
-            label: '{{account.id | capitalise}}',
-            parent: 'accounts'
-          },
-          redirectTo: 'accounts.wizard.license'
-        })
-        .state('accounts.wizard.license', {
-          url: '/license',
-          templateUrl: 'partials/accounts/license.html',
-          ncyBreadcrumb: {
-            skip: true
-          }
-        })
-        .state('accounts.wizard.complete', {
-          url: '/complete',
-          templateUrl: 'partials/accounts/complete.html',
-          ncyBreadcrumb: {
-            skip: true
+            label: '{{stateParams.id | capitalise}} License'
           }
         })
 

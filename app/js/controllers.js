@@ -4,26 +4,34 @@
 var portalControllers = angular.module('portalControllers', []);
 
 
-portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,$stateParams,Accounts) {
+portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,$stateParams,PAPI) {
 
   // This is used to determine which step we are in within sections with child steps
   $scope.stateParams = $stateParams;
-  $scope.accounts = {};
 
-  // Get all the accounts the current user has and load into the scope now
+  // Start with empty map
+  $scope.accounts = {jira:{},confluence:{},bitbucket:{},all : function(){
+    var a = $scope.accounts
+    return Object.assign({}, a.jira, a.confluence, a.bitbucket)
+  }};
 
-  Accounts.one("jira").getList().then(function(jiraAccount){
-    console.log(jiraAccount);
-    $scope.accounts.jira = jiraAccount[0] || {};
-  })
-  Accounts.one("confluence").getList().then(function(confluenceAccount){
-    console.log(confluenceAccount);
-    $scope.accounts.confluence = confluenceAccount[0] || {};
-  })
-  Accounts.one("bitbucket").getList().then(function(bitbucketAccount){
-    console.log(bitbucketAccount);
-    $scope.accounts.bitbucket = bitbucketAccount[0] || {};
-  })
+  // Load status of account for each app into scope
+  PAPI.jira.account({}).then(function(response){
+    $scope.accounts.jira = response.data;
+  });
+
+  PAPI.confluence.account({}).then(function(response){
+    $scope.accounts.confluence = response.data;
+  });
+
+  PAPI.bitbucket.account({}).then(function(response){
+    $scope.accounts.bitbucket = response.data;
+  });
+
+  $scope.projects = {jira:{},confluence:{},bitbucket:{},all : function(){
+    var p = $scope.projects
+    return Object.assign({}, p.jira, p.confluence, p.bitbucket)
+  }};
 
   // If any state in app has redirect set then goto it here.
   $rootScope.$on('$stateChangeStart', function(evt, to, params) {
@@ -43,165 +51,146 @@ portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,
 
 
 
-portalControllers.controller('AccountsCtrl', function($scope,$state,Accounts,JiraAccounts) {
+portalControllers.controller('AccountsCtrl', function($scope,$state,PAPI) {
 
-  $scope.isEditMode = function(){
-    if($state.params.id){
-      return true;
-    }
-    return false;
-  };
-
-  // Setup edit mode for type
-  $scope.edit = function(id){
-    var account = {
-      "id": id,
-      "license_agreed": false
-    };
-
-    $scope.account = account;
-    $state.go("accounts.wizard",{"id":id});
-  };
-
-  $scope.agreeLicense = function(){
-    $scope.account["license_agreed"] = true;
-    console.log($scope.account);
-    $state.go("accounts.wizard.complete",{"id":$scope.account.id});
-  };
-
-  //
-  $scope.update = function(id){
-    console.log("updating: "+id)
-    // Put the new object on the server
-    Accounts.one(id).post($scope.account).then(function(accounts){
-      // update actual accounts from server
-      $scope.accounts[$scope.account.id] = accounts;
-      console.log("Account "+$scope.account.id+" Created: " + JSON.stringify(accounts))
-      $state.go("accounts");
-      Materialize.toast('Account '+$scope.account.id+' has been created', 4000);
-    })
+  // Show a given license
+  $scope.showLicense = function(id){
+    console.log("showing license for " + id);
+    $state.go("accounts.licenses",{"id":id});
   }
 
-  $scope.delete = function(id){
-    Accounts.one(id).remove().then(function(accounts) {
-      $scope.accounts = accounts;
+  // Deactivate account
+  $scope.deactivate = function(id){
+    console.log("deactivating " + id);
+    PAPI[id].license({signed:false}).then(function(response){
+      $scope.accounts[id] = response.data;
+      console.log(id + " account: " + response.data.active);
       $state.go("accounts");
-      Materialize.toast('Account '+id+' has been deleted', 4000);
     });
-  };
+  }
+
+});
+
+portalControllers.controller('AccountsLicensesCtrl', function($scope,$state,PAPI) {
+
+  // User has clicked agree in the modal
+  $scope.agreeLicense = function(id, agreed){
+    console.log("user "+ ( (agreed) ? "did" : "did not" ) +" agree to license for " + id);
+    PAPI[id].license({signed:true}).then(function(response){
+      $scope.accounts[id] = response.data;
+      console.log(id + " account: " + response.data.active);
+      $("#license_modal").closeModal();
+      $state.go("accounts");
+    });
+  }
+
+  // Show the license in a modal as soon as were ready
+  $("#license_modal").openModal({dismissible: true});
+
 });
 
 
-portalControllers.controller('ProjectsCtrl', function($scope,$state,Projects) {
+portalControllers.controller('ProjectsCtrl', function($scope,$state,PAPI) {
 
-    // Get list of users projects from server
-    Projects.getList().then(function(projects){
-      $scope.projects = projects;
-    })
+  // Load status of projects for each app into scope
+  PAPI.jira.project.list().then(function(response){
+    $scope.projects.jira = response.data;
+  });
 
-    // Handle editing a project
-    $scope.editProject = function(project){
-      console.log("EDIT Project with id: " + project.id);
-      $scope.project = project;
-      $state.go("projects.edit",{id:project.id});
+  PAPI.confluence.project.list().then(function(response){
+    $scope.projects.confluence = response.data;
+  });
+
+  PAPI.bitbucket.project.list().then(function(response){
+    $scope.projects.bitbucket = response.data;
+  });
+
+  // Handle editing a project
+  $scope.editProject = function(project){
+    console.log("EDIT Project with id: " + project.id);
+    $scope.project = project;
+    $state.go("projects.edit",{id:project.id});
+  }
+
+  // Handle creating a project
+  $scope.newProject = function(type){
+    console.log($scope.accounts,type,$scope.accounts[type]);
+    if($scope.accounts[type].active){
+      console.log("CREATE Project of type: " + type);
+      $scope.type = type;
+      $state.go("projects.new");
     }
-
-    // Handle creating a project
-    $scope.newProject = function(type){
-      if($scope.accounts.jira.id){
-        console.log("CREATE Project of type: " + type);
-        $scope.type = type;
-        $state.go("projects.new");
-      }
-      else{
-        console.log("Cant create project of type: " + type + " : reason (no account)");
-        $state.go("accounts");
-        Materialize.toast('You need a '+type+' account first', 4000);
-      }
+    else{
+      console.log("Cant create project of type: " + type + " : reason (no account)");
+      Materialize.toast('You need a '+type+' account first', 4000);
     }
+  }
 
-    // Handle deleting a project
-    $scope.deleteProject = function(project){
-      console.log("DELETE Project with id: " + project.id);
-      // TODO: Add some confirmation box
-      Projects.one(project.id).remove().then(function(projects) {
-        $scope.projects = projects;
-        $state.go("projects");
-        Materialize.toast('Project '+project.id+' has been deleted', 4000);
-      });
-    }
+  // Handle deleting a project
+  $scope.deleteProject = function(project){
+    console.log("DELETE Project with id: " + project.id);
+    // TODO: Add some confirmation box
+    PAPI[project.type].project.delete(project.id).then(function(response){
+      $scope.projects[type] = response.data;
+      $state.go("projects");
+      Materialize.toast('Project '+project.$loki+' has been deleted', 4000);
+    });
+
+  }
 });
 
 
-portalControllers.controller('ProjectsNewCtrl', function($scope,$state,Projects) {
+portalControllers.controller('ProjectsNewCtrl', function($scope,$state,PAPI) {
 
   $scope.project = {};
 
-  $scope.createProject = function(){
+  $scope.createProject = function(type){
 
-    // add type from scope
-    $scope.project.type = $scope.type;
-    $scope.type = "";
-
-    // Put the new object on the server
-    Projects.post($scope.project).then(function(project){
-
-      // Eagerly insert the object into the local collection
-      $scope.projects.push(project);
-      console.log("Project "+project.id+" Created: " + JSON.stringify($scope.projects))
-      $state.go("projects.list");
+    PAPI[type].project.create($scope.project).then(function(response){
+      $state.go("projects");
       Materialize.toast('Project '+project.id+' has been created', 4000);
-    })
+    });
+
   }
 
 });
 
 
-portalControllers.controller('ProjectsEditCtrl', function($scope,Projects,$stateParams,$state) {
+portalControllers.controller('ProjectsEditCtrl', function($scope,$stateParams,$state,PAPI) {
 
-    Projects.one($stateParams.id).get().then(function(project){
-      $scope.project = project;
+  PAPI[$stateParams.type].project.read($stateParams.id).then(function(response){
+    $scope.project = response;
+  });
+
+  $scope.updateProject = function(project){
+
+    PAPI[$scope.project.type].project.update($scope.project.id, $scope.project).then(function(response){
+      $state.go("projects");
+      Materialize.toast('Project '+response.id+' has been updated', 4000);
     });
 
-    $scope.updateProject = function(project){
-
-      // PUT the new object on the server
-      project.put().then(function(project){
-
-        // Insert the newly updated object into the local collection for eager refresh
-        for (var i in $scope.projects) {
-          if ($scope.projects[i].id == project.id) {
-             $scope.projects[i] = project;
-             break;
-          }
-        }
-
-        console.log("Project "+project.id+" Updated: " + JSON.stringify($scope.projects))
-        $state.go("projects");
-        Materialize.toast('Project '+project.id+' has been updated', 4000);
-      })
-    }
+  }
 
 });
 
 
 portalControllers.controller('PasswordCtrl', function($scope) {
 
-    // Configure Password reset scope here.
+  // Configure Password reset scope here.
+  $scope.password = "";
+
+  $scope.resetPassword = function(){
+    console.log("user reset password to: " + $scope.password);
     $scope.password = "";
+    Materialize.toast('Password has been reset', 4000);
+  }
 
-    $scope.resetPassword = function(){
-      console.log("user reset password to: " + $scope.password);
-      $scope.password = "";
-      Materialize.toast('Password has been reset', 4000);
+  $scope.validPassword = function(){
+    if($scope.password.length < 8){
+      return false;
     }
 
-    $scope.validPassword = function(){
-      if($scope.password.length < 8){
-        return false;
-      }
-
-      return true;
-    }
+    return true;
+  }
 
 });

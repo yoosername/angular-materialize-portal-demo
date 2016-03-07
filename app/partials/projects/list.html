@@ -25,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="project in projects">
+      <tr ng-repeat="project in projects.all()">
         <td>{{project.id}}</td>
         <td>
           <a ui-sref="projects.jira" class="waves-effect waves-light">
