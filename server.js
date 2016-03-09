@@ -13,7 +13,7 @@ router.use(function(req, res, next) {
 });
 
 // Static routes used by angular single page app
-app.use('/lib', express.static(__dirname + '/bower_components'));
+app.use('/lib', express.static(__dirname + '/app/lib'));
 app.use('/js', express.static(__dirname + '/app/js'));
 app.use('/css', express.static(__dirname + '/app/css'));
 app.use('/img', express.static(__dirname + '/app/img'));
