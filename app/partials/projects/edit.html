@@ -1,12 +1,22 @@
 <div class="row">
-  <h4>Editing {{::project.application | uppercase}} project {{::project.name}} ({{::project._id}})</h4>
+  <h4>Edit {{::project.name}} ({{::project._id}})</h4>
 </div>
 <div class="row">
   <form ng-submit="updateProject(project)">
       <div class="row">
-        <div class="input-field col s12 m12">
-          <input disabled id="created" value="{{project.created|date:medium}}" type="text" class="validate">
+        <div class="input-field col s12 m6">
+          <input disabled id="created" value="{{project.created|date:'medium'}}" type="text" class="validate">
           <label class="active" for="created">Created</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input disabled id="updated" value="{{project.updated|date:'medium'}}" type="text" class="validate">
+          <label class="active" for="updated">Last Updated</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m12">
+          <input id="app" disabled ng-model="project.application" type="text" class="validate" autofocus>
+          <label class="active" for="app">Application</label>
         </div>
       </div>
       <div class="row">
