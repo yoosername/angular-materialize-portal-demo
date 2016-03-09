@@ -16,21 +16,27 @@
         <span class="title">JIRA</span>
         <p>Project / Issue tracking
         </p>
-        <a ng-click="newProject('jira')" class="secondary-content"><i class="new-project-icon material-icons">note_add</i></a>
+        <a ng-click="newProject('jira')" class="secondary-content">
+          <i ng-class="{'no-account':!accounts.jira.active}" class="new-project-icon material-icons">note_add</i>
+        </a>
       </li>
       <li class="collection-item avatar">
         <img src="img/confluence.png" alt="" class="circle">
         <span class="title">Confluence</span>
         <p>Collaboration
         </p>
-        <a ng-click="newProject('confluence')" class="secondary-content"><i class="new-project-icon material-icons">note_add</i></a>
+        <a ng-click="newProject('confluence')" class="secondary-content">
+          <i ng-class="{'no-account':!accounts.confluence.active}" class="new-project-icon material-icons">note_add</i>
+        </a>
       </li>
       <li class="collection-item avatar">
         <img src="img/bitbucket.png" alt="" class="circle">
         <span class="title">Bitbucket</span>
         <p>Version Control
         </p>
-        <a ng-click="newProject('bitbucket')" class="secondary-content"><i class="new-project-icon material-icons">note_add</i></a>
+        <a ng-click="newProject('bitbucket')" class="secondary-content">
+          <i ng-class="{'no-account':!accounts.bitbucket.active}" class="new-project-icon material-icons">note_add</i>
+        </a>
       </li>
     </ul>
 

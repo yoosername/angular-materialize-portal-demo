@@ -50,7 +50,7 @@ portalApp.config(function(
           }
         })
         .state('accounts.licenses', {
-          url: "/licenses/:id",
+          url: "/licenses/:id?nextState",
           views: {
             '': {
               templateUrl: function ($stateParams){

@@ -7,6 +7,7 @@ var portalControllers = angular.module('portalControllers', []);
 portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,$stateParams,PAPI) {
 
   // This is used to determine which step we are in within sections with child steps
+  $scope.state = $state;
   $scope.stateParams = $stateParams;
 
   // Start with empty map
@@ -86,7 +87,12 @@ portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,
 
 
 
-portalControllers.controller('AccountsCtrl', function($scope,$state,PAPI) {
+portalControllers.controller('AccountsCtrl', function($scope,$state,$stateParams,PAPI) {
+
+  $scope.state = $state;
+  $scope.stateParams = $stateParams;
+
+  console.log("stateParams: ",$stateParams)
 
   // Show a given license
   $scope.showLicense = function(id){
@@ -106,33 +112,46 @@ portalControllers.controller('AccountsCtrl', function($scope,$state,PAPI) {
 
 });
 
-portalControllers.controller('AccountsLicensesCtrl', function($scope,$state,PAPI) {
+portalControllers.controller('AccountsLicensesCtrl', function($scope,$state,$stateParams,PAPI) {
 
-  // User has clicked agree in the modal
-  $scope.agreeLicense = function(id, agreed){
-    console.log("user "+ ( (agreed) ? "did" : "did not" ) +" agree to license for " + id);
-    PAPI[id].license({signed:true}).then(function(response){
-      $scope.accounts[id] = response.data;
-      console.log("response: ", response.data);
-      $("#license_modal").closeModal();
-      $state.go("accounts");
-    });
+  $scope.licenseApp = $stateParams.id;
+
+  // setup where we want to take the user next
+  $scope.nextState = $stateParams.nextState || "accounts"
+  $scope.nextStateParams = ($scope.nextState!="accounts")?{application:$scope.licenseApp}:{}
+
+  console.log("license state info: ",$stateParams)
+
+  $scope.closeModal = function(agreed){
+
+    $("#license_modal").closeModal()
+
+    PAPI[$scope.licenseApp].license({agreed:agreed}).then(function(response){
+
+      $scope.accounts[$scope.licenseApp] = response.data;
+      $state.go($scope.nextState, $scope.nextStateParams);
+
+    })
   }
 
   // Show the license in a modal as soon as were ready
-  $("#license_modal").openModal({dismissible: true});
+  $("#license_modal").openModal({dismissible: false});
 
 });
 
 
 portalControllers.controller('ProjectsCtrl', function($scope,$state,$stateParams,PAPI) {
 
+  $scope.state = $state;
+
   $scope.sortField    = 'created';  // set the default sort field
-  $scope.sortReverse  = false;      // set the default sort order
+  $scope.sortReverse  = true;      // set the default sort order
   $scope.searchTerm   = '';         // set the default search/filter term
 
   // check if filter specified in params and apply it
-console.log($stateParams)
+  console.log("project state: ", $state)
+  console.log("project state params: ", $state.params)
+
   if($stateParams.filter && $stateParams.filter!=""){
     $scope.searchTerm = $stateParams.filter
   }
@@ -181,6 +200,12 @@ portalControllers.controller('ProjectsNewCtrl', function($scope,$state,$statePar
   $scope.project = {};
   $scope.application = $stateParams.application;
 
+  $scope.getAccountAndReturn = function(){
+    var application = $scope.application;
+    var next = $state.current.name;
+    $state.go("accounts.licenses",{id:application,nextState:next})
+  }
+
   $scope.createProject = function(type){
 
     PAPI[type].project.create($scope.project).then(function(response){
@@ -190,6 +215,10 @@ portalControllers.controller('ProjectsNewCtrl', function($scope,$state,$statePar
       Materialize.toast('Project '+response.data._id+' has been created', 4000);
     });
 
+  }
+
+  $scope.cancel = function(){
+    $state.go("projects");
   }
 
 });

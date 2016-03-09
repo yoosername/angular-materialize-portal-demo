@@ -27,9 +27,8 @@ a {
 }
 
 .active-account-badge{
-  background-color: #fff;
-  color: #039be5;
-  border-radius: 15px;
+  color: #fff;
+  font-size: 35px;
 }
 
 .collection .collection-item.avatar .title {
@@ -39,6 +38,11 @@ a {
 .new-project-icon{
   font-size: 40px;
   color: #039be5;
+}
+
+.new-project-icon.no-account{
+  color: #254250 !important;
+  opacity: .8 !important;
 }
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
@@ -61,16 +65,20 @@ a {
   padding-bottom:50px;
 }
 
+.btn-cancel {
+  background-color: crimson !important;
+}
+
 .account-inactive{
   background-color: #546e7a;
 }
 
 .account-active{
-  background-color: #26a69a;
+  background-color: #546e7a;
 }
 
 .account-active .btn{
-  background-color: #26a69a !important;
+  background-color: crimson !important;
 }
 
 a.delete{
@@ -145,6 +153,12 @@ footer.page-footer{
     margin: -4px 10px 0 10px;
     -webkit-font-smoothing: antialiased;
 }
+
+.dropdown-content li>a,
+.dropdown-content li>span {
+    color: #039be5 !important;
+}
+
 .crumbs span{
   color: #fff;
   background-color: crimson;
@@ -154,7 +168,13 @@ footer.page-footer{
 .btn{
   background-color: #039be5;
 }
+.btn:hover{
+  background-color: #039be5;
+}
 .btn-large{
+  background-color: #039be5;
+}
+.btn-large:hover{
   background-color: #039be5;
 }
 

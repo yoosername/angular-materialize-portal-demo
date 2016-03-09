@@ -2,8 +2,8 @@
   <h3>New {{application|uppercase}} project</h3>
 </div>
 <div ng-hide="accounts[application].active" class="row">
-  <h4>You havent got a {{application}} account yet</h4>
-  <h5>Get one here: <a ui-sref="accounts">Accounts</a></h5>
+  <h4>You havent got a {{application|uppercase}} account yet</h4>
+  <h5><a ng-click="getAccountAndReturn()">Get Started</a></h5>
 </div>
 <div ng-hide="!accounts[application].active" class="row">
   <div ng-hide="application&&accounts[application].active" class="row">
@@ -26,6 +26,7 @@
         <div class="row">
           <div class="input-field col s12">
             <button class="btn" id="submit" type="submit">create</button>
+            <button class="btn btn-cancel" id="cancel" ui-sref="projects">cancel</button>
           </div>
         </div>
       </form>

@@ -22,7 +22,7 @@ var routeFactory = function(app){
   router.route('/license')
       .put((req, res) => {
 
-        var accActive = (req.body.signed) ? true : false;
+        var accActive = (req.body.agreed) ? true : false;
 
         db.update(
           {type:'account',application: APP},
