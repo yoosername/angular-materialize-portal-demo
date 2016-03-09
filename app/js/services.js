@@ -25,7 +25,7 @@ portalServices.factory('PAPI', function($http) {
         update : function(id, payload){
           return $http.put('/api/jira/project/' + id, payload);
         },
-        delete : function(){
+        delete : function(id){
           return $http.delete('/api/jira/project/' + id);
         }
       }
@@ -50,7 +50,7 @@ portalServices.factory('PAPI', function($http) {
         update : function(id, payload){
           return $http.put('/api/confluence/project/' + id, payload);
         },
-        delete : function(){
+        delete : function(id){
           return $http.delete('/api/confluence/project/' + id);
         }
       }
@@ -75,7 +75,7 @@ portalServices.factory('PAPI', function($http) {
         update : function(id, payload){
           return $http.put('/api/bitbucket/project/' + id, payload);
         },
-        delete : function(){
+        delete : function(id){
           return $http.delete('/api/bitbucket/project/' + id);
         }
       }

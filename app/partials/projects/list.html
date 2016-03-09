@@ -1,47 +1,51 @@
-<div class="row">
-  <div class="col s6 m6">
-    <h3>My Projects</h3>
-  </div>
-</div>
 <div class="row" ng-hide="projects.length>0">
   <div class="col s12 m12">
-    <h4>You currently have no projects</h4>
-    <p>
-      Click one of the links above to get started
-    </p>
+    <h3>You currently have no projects</h3>
+    <h5>
+      Click one of the links on the left to get started
+    </h5>
   </div>
 </div>
 <div class="row" ng-hide="projects.length==0">
   <table class="highlight">
     <thead>
       <tr>
-        <th data-field="id">ID</th>
-        <th data-field="type">Type</th>
-        <th data-field="created">Created</th>
-        <th data-field="updated">Updated</th>
-        <th data-field="name">Name</th>
-        <th data-field="desc">Description</th>
-        <th data-field="actions">Actions</th>
+        <th>
+          <a ng-click="sortField = 'application';sortReverse = !sortReverse">App
+            <i ng-show="sortField == 'application' && !sortReverse" class="material-icons">keyboard_arrow_down</i>
+            <i ng-show="sortField == 'application' && sortReverse" class="material-icons">keyboard_arrow_up</i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="sortField = 'created';sortReverse = !sortReverse">Created
+            <i ng-show="sortField == 'created' && !sortReverse" class="material-icons">keyboard_arrow_down</i>
+            <i ng-show="sortField == 'created' && sortReverse" class="material-icons">keyboard_arrow_up</i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="sortField = 'name';sortReverse = !sortReverse">Name
+            <i ng-show="sortField == 'name' && !sortReverse" class="material-icons">keyboard_arrow_down</i>
+            <i ng-show="sortField == 'name' && sortReverse" class="material-icons">keyboard_arrow_up</i>
+          </a>
+        </th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="project in projects.all()">
-        <td>{{project.id}}</td>
+      <tr ng-repeat="project in projects | search:searchTerm | orderBy:sortField:sortReverse">
         <td>
-          <a ui-sref="projects.jira" class="waves-effect waves-light">
-            <i class="material-icons left">filter_list</i>{{project.type | uppercase}}
+          <a ng-click="search(project.application)" class="waves-effect waves-light">
+            <i class="material-icons left">filter_list</i>{{project.application | uppercase}}
           </a>
         </td>
         <td>{{project.created | date:'medium'}}</td>
-        <td>{{project.updated | date:'medium'}}</td>
         <td>{{project.name}}</td>
-        <td>{{project.desc}}</td>
         <td class="actions_column">
-          <a ng-click="editProject(project)" class="waves-effect waves-light btn action">
-            <i class="material-icons left">mode_edit</i>Edit
+          <a ng-click="editProject(project)" class="action-edit">
+            <i class="material-icons left">mode_edit</i>
           </a>
-          <a ng-click="deleteProject(project)" class="delete waves-effect waves-light btn action">
-            <i class="material-icons left">delete</i>Delete
+          <a ng-click="deleteProject(project)" class="action-delete">
+            <i class="material-icons left">delete</i>
           </a>
         </td>
       </tr>

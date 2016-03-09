@@ -14,15 +14,26 @@
 </head>
 <body ng-cloak ng-controller="DashboardCtrl">
 
-  <nav>
+  <nav class="top-nav">
     <div class="nav-wrapper">
       <a ui-sref="dashboard" class="brand-logo"><i class="material-icons left large">whatshot</i>Portal</a>
       <div class="crumbs left hide-on-med-and-down" ncy-breadcrumb></div>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a ui-sref="profile">Profile<i class="material-icons left large">account_circle</i></a></li>
+        <li>
+          <a class="dropdown-button" href="#!" data-beloworigin="true" data-activates="dropdown">
+            Menu<i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
+
+  <ul id="dropdown" class="dropdown-content">
+    <li><a ui-sref="accounts">Accounts</a></li>
+    <li><a ui-sref="projects">Projects</a></li>
+    <li class="divider"></li>
+    <li><a ui-sref="profile">Profile</a></li>
+  </ul>
 
   <div id="main" class="container">
     <div ui-view></div>

@@ -1,27 +1,33 @@
 <div class="row">
-  <h3>Create New {{type|uppercase}} project</h3>
+  <h3>New {{application|uppercase}} project</h3>
 </div>
-<div ng-hide="type" class="row">
-  <h4>Please pick an application from the links above</h4>
+<div ng-hide="accounts[application].active" class="row">
+  <h4>You havent got a {{application}} account yet</h4>
+  <h5>Get one here: <a ui-sref="accounts">Accounts</a></h5>
 </div>
-<div ng-hide="!type" class="row">
-  <form ng-submit="createProject(type)">
-      <div class="row">
-        <div class="input-field col s12">
-          <input ng-model="project.name" id="name" type="text" class="validate" autofocus>
-          <label for="name">Name</label>
+<div ng-hide="!accounts[application].active" class="row">
+  <div ng-hide="application&&accounts[application].active" class="row">
+    <h5>Please pick an application from the links on the left</h5>
+  </div>
+  <div ng-hide="!application" class="row">
+    <form ng-submit="createProject(application)">
+        <div class="row">
+          <div class="input-field col s12">
+            <input ng-model="project.name" id="name" type="text" class="validate" autofocus>
+            <label for="name">Name</label>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input ng-model="project.desc"  id="desc" type="text" class="validate">
-          <label for="desc">Description</label>
+        <div class="row">
+          <div class="input-field col s12">
+            <input ng-model="project.desc"  id="desc" type="text" class="validate">
+            <label for="desc">Description</label>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <button class="btn" id="submit" type="submit">create</button>
+        <div class="row">
+          <div class="input-field col s12">
+            <button class="btn" id="submit" type="submit">create</button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+  </div>
 </div>

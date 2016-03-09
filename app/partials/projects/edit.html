@@ -1,5 +1,5 @@
 <div class="row">
-  <h3>Edit {{project.type | uppercase}} project {{project.name}} ({{project.id}})</h3>
+  <h4>Editing {{::project.application | uppercase}} project {{::project.name}} ({{::project._id}})</h4>
 </div>
 <div class="row">
   <form ng-submit="updateProject(project)">

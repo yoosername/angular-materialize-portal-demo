@@ -80,19 +80,27 @@ portalApp.config(function(
         })
 
         .state('projects.list', {
-          url: "/all",
+          url: "/all?filter",
           views: {
             '': {
               templateUrl: "partials/projects/list.html",
+              controller: function($scope, $stateParams) {
+                if(typeof $stateParams.filter == "string"
+                    && $stateParams.filter.length > 0
+                    && $stateParams.filter != "true"
+                ){
+                    $scope.search($stateParams.filter);
+                }
+              }
             }
           },
           ncyBreadcrumb: {
-            label: 'My Projects'
+            label: 'All'
           }
         })
 
         .state('projects.new', {
-          url: "/new",
+          url: "/:application/new",
           views: {
             '': {
               templateUrl: "partials/projects/new.html",
@@ -100,12 +108,12 @@ portalApp.config(function(
             }
           },
           ncyBreadcrumb: {
-            label: 'New'
+            label: 'New {{stateParams.application | capitalise}}'
           }
         })
 
         .state('projects.edit', {
-          url: "/edit/:id",
+          url: "/:application/edit/:id",
           views: {
             '': {
               templateUrl: "partials/projects/edit.html",
@@ -113,7 +121,7 @@ portalApp.config(function(
             }
           },
           ncyBreadcrumb: {
-            label: '{{stateParams.id | capitalise}}'
+            label: 'Edit {{stateParams.id | capitalise}}'
           }
         })
 

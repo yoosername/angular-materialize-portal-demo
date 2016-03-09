@@ -1,9 +1,43 @@
 <!-- This page is just holding for project list / edit views -->
 <div class="row">
-  <div class="col s12 m12">
-    <a ng-click="newProject('jira')" class="btn right btn-new-project"><i class="material-icons left">create_new_folder</i>JIRA</a>
-    <a ng-click="newProject('confluence')" class="btn right btn-new-project"><i class="material-icons left">create_new_folder</i>Confluence</a>
-    <a ng-click="newProject('bitbucket')" class="btn right btn-new-project"><i class="material-icons left">create_new_folder</i>Bitbucket</a>
+  <div class="col s12 m3">
+
+    <ul class="collection">
+      <li class="collection-item">
+        <div class="input-field">
+          <i class="material-icons prefix">search</i>
+          <i ng-hide="!searchTerm" ng-click="search()" class="material-icons clear-filter">clear</i>
+          <input ng-disabled="projects.length==0" id="projectSearch" type="text"
+                  placeholder="search" class="validate active" ng-model="searchTerm">
+        </div>
+      </li>
+      <li class="collection-item avatar">
+        <img src="img/jira.png" alt="" class="circle">
+        <span class="title">JIRA</span>
+        <p>Project / Issue tracking
+        </p>
+        <a ng-click="newProject('jira')" class="secondary-content"><i class="new-project-icon material-icons">note_add</i></a>
+      </li>
+      <li class="collection-item avatar">
+        <img src="img/confluence.png" alt="" class="circle">
+        <span class="title">Confluence</span>
+        <p>Collaboration
+        </p>
+        <a ng-click="newProject('confluence')" class="secondary-content"><i class="new-project-icon material-icons">note_add</i></a>
+      </li>
+      <li class="collection-item avatar">
+        <img src="img/bitbucket.png" alt="" class="circle">
+        <span class="title">Bitbucket</span>
+        <p>Version Control
+        </p>
+        <a ng-click="newProject('bitbucket')" class="secondary-content"><i class="new-project-icon material-icons">note_add</i></a>
+      </li>
+    </ul>
+
+  </div>
+  <div class="col s12 m9">
+    <div class="container">
+      <div ui-view></div>
+    </div>
   </div>
 </div>
-<div ui-view></div>

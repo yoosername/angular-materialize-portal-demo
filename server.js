@@ -20,9 +20,11 @@ app.use('/img', express.static(__dirname + '/app/img'));
 app.use('/partials', express.static(__dirname + '/app/partials'));
 
 // API routes
-router.use('/jira',require('./server/routes/jira'));
-router.use('/confluence',require('./server/routes/confluence'));
-router.use('/bitbucket',require('./server/routes/bitbucket'));
+const factory = require('./server/routes/api');
+
+router.use('/jira', factory("jira"));
+router.use('/confluence',factory("confluence"));
+router.use('/bitbucket',factory("bitbucket"));
 router.use('/password',require('./server/routes/password'));
 
 // Parse json in API calls

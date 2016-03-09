@@ -16,13 +16,21 @@ filters.filter('capitalise', function() {
     }
 });
 
-filters.filter('jira', function(obj){
+filters.filter('search', function($filter){
+   return function(items, text){
+      if (!text || text.length === 0)
+        return items;
 
-    if(obj.type === "jira")
-    {
-        return true; // this will be listed in the results
-    }
+      // split search text on space
+      var searchTerms = text.split(' ');
 
-    return false; // otherwise it won't be within the results
+      // search for single terms.
+      // this reduces the item list step by step
+      searchTerms.forEach(function(term) {
+        if (term && term.length)
+          items = $filter('filter')(items, term);
+      });
 
+      return items
+   };
 });

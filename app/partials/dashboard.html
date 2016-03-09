@@ -4,12 +4,12 @@
   <div class="col s12 m4">
     <div class="card blue-grey darken-1 hoverable">
       <div class="card-content white-text">
-        <span class="card-title">Accounts</span>
-        <p>Create or update your accounts</p>
+        <span class="card-title">Accounts</span><span class="badge">{{activeAccounts()}} of 3</span>
+        <p>Manage my accounts</p>
       </div>
       <div class="card-action">
         <a ui-sref="accounts" class="waves-effect waves-light btn">
-          <i class="material-icons left">account_box</i>accounts
+          <i class="material-icons left">account_box</i>Go
         </a>
       </div>
     </div>
@@ -18,12 +18,12 @@
   <div class="col s12 m4">
     <div class="card blue-grey darken-1 hoverable">
       <div class="card-content white-text">
-        <span class="card-title">Projects</span>
-        <p>Create or update your projects</p>
+        <span class="card-title">Projects</span><span class="badge">{{projects.length}}</span>
+        <p>Manage my projects</p>
       </div>
       <div class="card-action">
         <a ui-sref="projects" class="waves-effect waves-light btn">
-          <i class="material-icons left">work</i>Projects
+          <i class="material-icons left">work</i>Go
         </a>
       </div>
     </div>

@@ -15,7 +15,20 @@ portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,
     return Object.assign({}, a.jira, a.confluence, a.bitbucket)
   }};
 
-  // Load status of account for each app into scope
+  // utility to determine how many accounts are active
+  $scope.activeAccounts = function(){
+    var acc = $scope.accounts
+    var all = [].concat(acc.jira,acc.confluence,acc.bitbucket)
+    var num = 0;
+    for(var i=0; i < all.length; i++){
+      if(all[i].active){
+        num++;
+      }
+    }
+    return num;
+  }
+
+  // Load accounts from server
   PAPI.jira.account({}).then(function(response){
     $scope.accounts.jira = response.data;
   });
@@ -28,10 +41,32 @@ portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,
     $scope.accounts.bitbucket = response.data;
   });
 
-  $scope.projects = {jira:{},confluence:{},bitbucket:{},all : function(){
-    var p = $scope.projects
-    return Object.assign({}, p.jira, p.confluence, p.bitbucket)
-  }};
+  $scope.projects = []
+
+  // Load status of projects for each app into scope
+  PAPI.jira.project.list().then(function(response){
+    var projects = response.data;
+    for (var i = 0; i < projects.length; i++) {
+        $scope.projects.push(projects[i]);
+    }
+    console.log("jira", response.data)
+  });
+
+  PAPI.confluence.project.list().then(function(response){
+    var projects = response.data;
+    for (var i = 0; i < projects.length; i++) {
+        $scope.projects.push(projects[i]);
+    }
+    console.log("confluence", response.data)
+  });
+
+  PAPI.bitbucket.project.list().then(function(response){
+    var projects = response.data;
+    for (var i = 0; i < projects.length; i++) {
+        $scope.projects.push(projects[i]);
+    }
+    console.log("bitbucket", response.data)
+  });
 
   // If any state in app has redirect set then goto it here.
   $rootScope.$on('$stateChangeStart', function(evt, to, params) {
@@ -78,7 +113,7 @@ portalControllers.controller('AccountsLicensesCtrl', function($scope,$state,PAPI
     console.log("user "+ ( (agreed) ? "did" : "did not" ) +" agree to license for " + id);
     PAPI[id].license({signed:true}).then(function(response){
       $scope.accounts[id] = response.data;
-      console.log(id + " account: " + response.data.active);
+      console.log("response: ", response.data);
       $("#license_modal").closeModal();
       $state.go("accounts");
     });
@@ -90,65 +125,69 @@ portalControllers.controller('AccountsLicensesCtrl', function($scope,$state,PAPI
 });
 
 
-portalControllers.controller('ProjectsCtrl', function($scope,$state,PAPI) {
+portalControllers.controller('ProjectsCtrl', function($scope,$state,$stateParams,PAPI) {
 
-  // Load status of projects for each app into scope
-  PAPI.jira.project.list().then(function(response){
-    $scope.projects.jira = response.data;
-  });
+  $scope.sortField    = 'created';  // set the default sort field
+  $scope.sortReverse  = false;      // set the default sort order
+  $scope.searchTerm   = '';         // set the default search/filter term
 
-  PAPI.confluence.project.list().then(function(response){
-    $scope.projects.confluence = response.data;
-  });
-
-  PAPI.bitbucket.project.list().then(function(response){
-    $scope.projects.bitbucket = response.data;
-  });
+  // check if filter specified in params and apply it
+console.log($stateParams)
+  if($stateParams.filter && $stateParams.filter!=""){
+    $scope.searchTerm = $stateParams.filter
+  }
+  // update the filter text
+  $scope.search = function(term){
+    $scope.searchTerm = term;
+  }
 
   // Handle editing a project
   $scope.editProject = function(project){
-    console.log("EDIT Project with id: " + project.id);
-    $scope.project = project;
-    $state.go("projects.edit",{id:project.id});
+    console.log("EDIT Project with id: " + project._id);
+    $state.go("projects.edit",{application:project.application, id:project._id});
   }
 
   // Handle creating a project
-  $scope.newProject = function(type){
-    console.log($scope.accounts,type,$scope.accounts[type]);
-    if($scope.accounts[type].active){
-      console.log("CREATE Project of type: " + type);
-      $scope.type = type;
-      $state.go("projects.new");
-    }
-    else{
-      console.log("Cant create project of type: " + type + " : reason (no account)");
-      Materialize.toast('You need a '+type+' account first', 4000);
-    }
+  $scope.newProject = function(application){
+    $scope.application = application;
+    $state.go("projects.new",{application:application});
   }
 
   // Handle deleting a project
   $scope.deleteProject = function(project){
-    console.log("DELETE Project with id: " + project.id);
+    console.log("DELETE Project with id: " + project._id);
     // TODO: Add some confirmation box
-    PAPI[project.type].project.delete(project.id).then(function(response){
-      $scope.projects[type] = response.data;
+    PAPI[project.application].project.delete(project._id).then(function(response){
+
+      var projects = [];
+      // remove the item from the local store
+      for (var i = 0; i < $scope.projects.length; i++) {
+          if($scope.projects[i]._id != project._id){
+            projects.push($scope.projects[i])
+          }
+      }
+      $scope.projects = projects;
+
       $state.go("projects");
-      Materialize.toast('Project '+project.$loki+' has been deleted', 4000);
+      Materialize.toast('Project '+project._id+' has been deleted', 4000);
     });
 
   }
 });
 
 
-portalControllers.controller('ProjectsNewCtrl', function($scope,$state,PAPI) {
+portalControllers.controller('ProjectsNewCtrl', function($scope,$state,$stateParams,PAPI) {
 
   $scope.project = {};
+  $scope.application = $stateParams.application;
 
   $scope.createProject = function(type){
 
     PAPI[type].project.create($scope.project).then(function(response){
+      // add the new item to local store immediately
+      $scope.projects.push(response.data)
       $state.go("projects");
-      Materialize.toast('Project '+project.id+' has been created', 4000);
+      Materialize.toast('Project '+response.data._id+' has been created', 4000);
     });
 
   }
@@ -158,15 +197,33 @@ portalControllers.controller('ProjectsNewCtrl', function($scope,$state,PAPI) {
 
 portalControllers.controller('ProjectsEditCtrl', function($scope,$stateParams,$state,PAPI) {
 
-  PAPI[$stateParams.type].project.read($stateParams.id).then(function(response){
-    $scope.project = response;
+  $scope.editing = true
+
+  console.log("app: ",$stateParams.application," : id: ",$stateParams._id)
+  PAPI[$stateParams.application].project.read($stateParams.id).then(function(response){
+    $scope.project = response.data;
+    console.log("editing: ",$scope.project)
   });
 
   $scope.updateProject = function(project){
 
-    PAPI[$scope.project.type].project.update($scope.project.id, $scope.project).then(function(response){
+    PAPI[$scope.project.application].project.update($scope.project._id, $scope.project).then(function(response){
+
+      var projects = [];
+      // replace the updated item in the local store
+      for (var i = 0; i < $scope.projects.length; i++) {
+          if($scope.projects[i]._id == response.data._id){
+            projects.push(response.data)
+          }else{
+            projects.push($scope.projects[i])
+          }
+      }
+      console.log("before: ",JSON.stringify($scope.projects))
+      $scope.projects = projects;
+      console.log("after: ",JSON.stringify($scope.projects))
+
       $state.go("projects");
-      Materialize.toast('Project '+response.id+' has been updated', 4000);
+      Materialize.toast('Project '+$scope.project._id+' has been updated', 4000);
     });
 
   }
