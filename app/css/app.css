@@ -10,6 +10,15 @@ a {
   cursor: pointer;
 }
 
+.list-switch-item{
+  margin: 0px;
+  padding: 0px;
+  width: 100px;
+}
+.list-switch-item label{
+  position: initial !important;
+}
+
 .clear-filter{
   position: absolute;
   right: 0px;

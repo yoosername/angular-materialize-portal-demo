@@ -19,9 +19,25 @@
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <input ng-model="project.desc"  id="desc" type="text" class="validate">
+            <input ng-model="project.desc" id="desc" type="text" class="validate">
             <label for="desc">Description</label>
           </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s2">
+            <label>Has Data?</label>
+          </div>
+          <div class="input-field switch col s10">
+              <label>
+                No
+                <input type="checkbox" ng-model="project.data"  ng-true-value="'has_data'" ng-false-value="'no_data'" id="data">
+                <span class="lever"></span>
+                Yes
+              </label>
+          </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12"></div>
         </div>
         <div class="row">
           <div class="input-field col s12">

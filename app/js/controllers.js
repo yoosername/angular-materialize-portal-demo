@@ -44,6 +44,10 @@ portalControllers.controller('DashboardCtrl', function($rootScope,$scope,$state,
 
   $scope.projects = []
 
+  $scope.updateProjects = function(projects){
+    $scope.projects = projects
+  }
+
   // Load status of projects for each app into scope
   PAPI.jira.project.list().then(function(response){
     var projects = response.data;
@@ -185,12 +189,28 @@ portalControllers.controller('ProjectsCtrl', function($scope,$state,$stateParams
             projects.push($scope.projects[i])
           }
       }
-      $scope.projects = projects;
+      $scope.updateProjects(projects)
 
       $state.go("projects");
       Materialize.toast('Project '+project._id+' has been deleted', 4000);
     });
 
+  }
+
+  $scope.updateHasData = function(project){
+    PAPI[project.application].project.update(project._id, project).then(function(response){
+
+      var projects = [];
+      // replace the updated item in the local store
+      for (var i = 0; i < $scope.projects.length; i++) {
+          if($scope.projects[i]._id == response.data._id){
+            projects.push(response.data)
+          }else{
+            projects.push($scope.projects[i])
+          }
+      }
+      $scope.updateProjects(projects)
+    });
   }
 });
 
@@ -247,12 +267,11 @@ portalControllers.controller('ProjectsEditCtrl', function($scope,$stateParams,$s
             projects.push($scope.projects[i])
           }
       }
-      console.log("before: ",JSON.stringify($scope.projects))
-      $scope.projects = projects;
-      console.log("after: ",JSON.stringify($scope.projects))
 
+      $scope.updateProjects(projects)
       $state.go("projects");
       Materialize.toast('Project '+$scope.project._id+' has been updated', 4000);
+      
     });
 
   }

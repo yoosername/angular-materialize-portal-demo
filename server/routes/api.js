@@ -85,7 +85,7 @@ var routeFactory = function(app){
 
     .put((req, res) => {
 
-      db.update({ _id: req.params.id }, req.body, {returnUpdatedDocs:true}, function (err, numReplaced, docs) {
+      db.update({ _id: req.params.id }, Object.assign({},req.body,{updated:new Date().getTime()}), {returnUpdatedDocs:true}, function (err, numReplaced, docs) {
         if(err){
           error(res, 404, err)
         }

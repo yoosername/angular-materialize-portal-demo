@@ -23,9 +23,21 @@
           </a>
         </th>
         <th>
+          <a ng-click="sortField = 'updated';sortReverse = !sortReverse">Updated
+            <i ng-show="sortField == 'updated' && !sortReverse" class="material-icons">keyboard_arrow_down</i>
+            <i ng-show="sortField == 'updated' && sortReverse" class="material-icons">keyboard_arrow_up</i>
+          </a>
+        </th>
+        <th>
           <a ng-click="sortField = 'name';sortReverse = !sortReverse">Name
             <i ng-show="sortField == 'name' && !sortReverse" class="material-icons">keyboard_arrow_down</i>
             <i ng-show="sortField == 'name' && sortReverse" class="material-icons">keyboard_arrow_up</i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="sortField = 'data';sortReverse = !sortReverse">Has Data
+            <i ng-show="sortField == 'data' && !sortReverse" class="material-icons">keyboard_arrow_down</i>
+            <i ng-show="sortField == 'data' && sortReverse" class="material-icons">keyboard_arrow_up</i>
           </a>
         </th>
         <th>Actions</th>
@@ -39,7 +51,13 @@
           </a>
         </td>
         <td>{{project.created | date:'medium'}}</td>
+        <td>{{project.updated | date:'medium'}}</td>
         <td>{{project.name}}</td>
+        <td>
+          <div class="input-field switch list-switch-item">
+            <label><input ng-change="updateHasData(project)" ng-true-value="'has_data'" ng-false-value="'no_data'" type="checkbox" ng-model="project.data" id="data"><span class="lever"></span></label>
+          </div>
+        </td>
         <td class="actions_column">
           <a ng-click="editProject(project)" class="action-edit">
             <i class="material-icons left">mode_edit</i>
