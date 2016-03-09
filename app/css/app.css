@@ -30,14 +30,16 @@ a {
 }
 
 .card-content span.badge{
-  color: #fff;
-  background-color: #039be5;
+  color: #254250;
+    background-color: gold;
   border-radius: 10px;
 }
 
 .active-account-badge{
-  color: #fff;
-  font-size: 35px;
+  color: #254250;
+  background-color: gold;
+  font-size: 25px;
+  border-radius: 15px;
 }
 
 .collection .collection-item.avatar .title {
@@ -88,6 +90,10 @@ a {
 
 .account-active .btn{
   background-color: crimson !important;
+}
+
+.account-active .btn-edit-license {
+  background-color: #039be5 !important;
 }
 
 a.delete{

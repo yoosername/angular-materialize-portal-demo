@@ -9,11 +9,14 @@
       <div class="card-content white-text">
         <i ng-hide="!accounts.jira.active" class="active-account-badge material-icons right">check circle</i>
         <span class="card-title">JIRA</span>
-        <p>Info about your JIRA account</p>
+        <p>Project / Issue tracking</p>
       </div>
       <div class="card-action">
         <a ng-hide="accounts.jira.active" ng-click="showLicense('jira')" class="waves-effect waves-light btn">
           <i class="material-icons left">check circle</i>Activate
+        </a>
+        <a ng-hide="!accounts.jira.active" ng-click="showLicense('jira')" class="btn-edit-license waves-effect waves-light btn">
+          <i class="material-icons left">check circle</i>License
         </a>
         <a ng-hide="!accounts.jira.active" ng-click="deactivate('jira')" class="waves-effect waves-light btn">
           <i class="material-icons left">delete forever</i>Deactivate
@@ -27,11 +30,14 @@
       <div class="card-content white-text">
         <i ng-hide="!accounts.confluence.active" class="active-account-badge material-icons right">check circle</i>
         <span class="card-title">Confluence</span>
-        <p>Info about your Confluence account</p>
+        <p>Collaboration</p>
       </div>
       <div class="card-action">
         <a ng-hide="accounts.confluence.active" ng-click="showLicense('confluence')" class="waves-effect waves-light btn">
           <i class="material-icons left">check circle</i>Activate
+        </a>
+        <a ng-hide="!accounts.confluence.active" ng-click="showLicense('confluence')" class="btn-edit-license waves-effect waves-light btn">
+          <i class="material-icons left">check circle</i>License
         </a>
         <a ng-hide="!accounts.confluence.active" ng-click="deactivate('confluence')" class="waves-effect waves-light btn">
           <i class="material-icons left">delete forever</i>Deactivate
@@ -44,11 +50,14 @@
       <div class="card-content white-text">
         <i ng-hide="!accounts.bitbucket.active" class="active-account-badge material-icons right">check circle</i>
         <span class="card-title">Bitbucket</span>
-        <p>Info about your Bitbucket account</p>
+        <p>Version Control</p>
       </div>
       <div class="card-action">
         <a ng-hide="accounts.bitbucket.active" ng-click="showLicense('bitbucket')" class="waves-effect waves-light btn">
           <i class="material-icons left">check circle</i>Activate
+        </a>
+        <a ng-hide="!accounts.bitbucket.active" ng-click="showLicense('bitbucket')" class="btn-edit-license waves-effect waves-light btn">
+          <i class="material-icons left">check circle</i>License
         </a>
         <a ng-hide="!accounts.bitbucket.active" ng-click="deactivate('bitbucket')" class="waves-effect waves-light btn">
           <i class="material-icons left">delete forever</i>Deactivate
